@@ -1,0 +1,16 @@
+{
+  "name": "reddice",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "dependencies": {
+    "react-dom": "^16.0.0",
+    "react": "^16.0.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "9werayut<werayut.ku@gmail.com>",
+  "license": "ISC"
+}
