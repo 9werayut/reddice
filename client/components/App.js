@@ -1,8 +1,12 @@
 import React from 'react';
-import Greeting from './Greeting';
+import NavigationBar from './NavigationBar';
+import Routes from '../Routes';
 
 export default () => {
     return (
-        <Greeting />
+        <div className="container">
+            <NavigationBar />
+            <Routes />
+        </div>
     );
 }
