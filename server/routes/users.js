@@ -1,0 +1,43 @@
+import express from 'express';
+import Validator from 'validator';
+import _ from 'lodash';
+
+let router = express.Router();
+
+function validateInput(data) {
+    let errors = {};
+    console.log(data);
+    if(Validator.isEmpty(data.username)) {
+        errors.username = 'This field is required';
+    }
+    if(!Validator.isEmail(data.email)){
+        errors.email = 'Email is invalid';
+    }
+    if(Validator.isEmpty(data.password)) {
+        errors.password = 'This field is required';
+    }
+    if(Validator.isEmpty(data.passwordConfirmation)) {
+        errors.passwordConfirmation = 'This field is required';
+    }
+    if(!Validator.equals(data.password, data.passwordConfirmation)){
+        error.passwordConfirmation = 'Passwords must match';
+    }
+    if(Validator.isEmpty(data.timezone)) {
+        errors.timezone = 'This field is required';
+    }
+
+    return {
+        errors,
+        isValid: _.isEmpty(errors)
+    }
+}
+
+router.post('/', (req, res) => {
+    const { errors, isValid } = validateInput(req.body); 
+
+    if(!isValid){
+        res.status(400).json(errors)
+    }
+});
+
+export default router;
