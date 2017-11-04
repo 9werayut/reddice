@@ -17,7 +17,10 @@ export default {
     rules: [
       {
         test: /\.js$/,
-        include: path.resolve(__dirname, 'client'),
+        include: [
+          path.resolve(__dirname, 'client'),
+          path.resolve(__dirname, 'server/shared')
+        ],
         exclude: /node_modules/,
         loader: [ 'react-hot-loader/webpack','babel-loader' ],
       }
