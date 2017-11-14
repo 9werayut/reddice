@@ -47,11 +47,15 @@ class SignupForm extends React.Component {
             this.setState({ errors: {}, isLoading: true });
             await this.props.userSignupRequest(this.state)
             .then( data => {
-                this.props.addFlashMessage({
-                    type: 'success',
-                    text: 'You signed up successfully. Welcome!'
-                })
-                this.context.router.history.push('/')
+                if(data.success){
+                    this.props.addFlashMessage({
+                        type: 'success',
+                        text: 'You signed up successfully. Welcome!'
+                    })
+                    this.context.router.history.push('/');
+                }else{
+                    this.setState({errors: data, isLoading: false})
+                }
             })
             .catch( err => this.setState({errors: data, isLoading: false}) );
         }
@@ -59,6 +63,7 @@ class SignupForm extends React.Component {
 
     render() {
         const { errors } = this.state;
+        console.log(errors);
         const options = _.map(timezones, (val, key) => {
             return (
                 <option key={val} value={val}>{key}</option>
