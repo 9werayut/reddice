@@ -18,10 +18,12 @@ class SignupForm extends React.Component {
             passwordConfirmation: '',
             timezone: '',
             errors: {},
-            isLoading: false
+            isLoading: false,
+            invalid: false
         }
 
         this.onChange = this.onChange.bind(this);
+        this.checkUserExists = this.checkUserExists.bind(this);
     }
 
     onChange(e) {
@@ -61,9 +63,28 @@ class SignupForm extends React.Component {
         }
     }
 
+    checkUserExists(e) {
+        const field = e.target.name;
+        const val = e.target.value;
+        if(val !== ''){
+            this.props.isUserExists(val).then(res => {
+                let errors = this.state.errors;
+                let invalid;
+
+                if(res.user) {
+                    errors[field] = 'There is user with such ' + field;
+                    invalid = true;
+                } else {
+                    errors[field] = '';
+                    invalid = false;
+                }
+                this.setState({ errors, invalid });
+            });
+        }
+    }
+
     render() {
         const { errors } = this.state;
-        console.log(errors);
         const options = _.map(timezones, (val, key) => {
             return (
                 <option key={val} value={val}>{key}</option>
@@ -77,6 +98,7 @@ class SignupForm extends React.Component {
                     error={errors.username}
                     label="Username"
                     onChange={this.onChange}
+                    checkUserExists={this.checkUserExists}
                     value={this.state.username}
                     field="username"
                     type="text"
@@ -85,6 +107,7 @@ class SignupForm extends React.Component {
                     error={errors.email}
                     label="Email"
                     onChange={this.onChange}
+                    checkUserExists={this.checkUserExists}
                     value={this.state.email}
                     field="email"
                     type="email"
@@ -121,7 +144,7 @@ class SignupForm extends React.Component {
                 </div>
 
                 <div className="form-group">
-                    <button disabled={this.state.isLoading} className="btn btn-primary btn-lg">
+                    <button disabled={this.state.isLoading || this.state.invalid} className="btn btn-primary btn-lg">
                         Sign up
                     </button>
                 </div>
@@ -132,7 +155,8 @@ class SignupForm extends React.Component {
 
 SignupForm.propTypes = {
     userSignupRequest: PropTypes.func.isRequired,
-    addFlashMessage: PropTypes.func.isRequired
+    addFlashMessage: PropTypes.func.isRequired,
+    isUserExists: PropTypes.func.isRequired
 }
 
 SignupForm.contextTypes = {

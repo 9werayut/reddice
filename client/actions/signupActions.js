@@ -9,3 +9,10 @@ export function userSignupRequest(userData) {
             .then(res => res.json());
     }
 }
+
+export function isUserExists(identifier) {
+    return async dispatch => {
+        return await fetch('/api/users/' + identifier)
+        .then(res => res.json());
+    }
+}
