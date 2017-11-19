@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-
 import TextFieldGroup from '../common/TextFieldGroup'
 import validateInput from '../../../server/shared/validations/login';
 
@@ -35,7 +34,11 @@ class LoginForm extends Component {
             this.setState({ errors: {}, isLoading: true });
             await this.props.login(this.state)
             .then(data => {
-                this.context.router.history.push('/');
+                if(data.errors){
+                    this.setState({ errors: data.errors, isLoading: false })
+                } else {
+                    this.context.router.history.push('/');
+                }
             })
             .catch(err => this.setState({ errors: data, isLoading: false }))
         }
@@ -51,6 +54,8 @@ class LoginForm extends Component {
         return (
             <form onSubmit={this.onSubmit}>
                 <h1>Login</h1>
+
+                { errors.form && <div className="alert alert-danger">{errors.form}</div> }
 
                 <TextFieldGroup
                     field="identifier"
