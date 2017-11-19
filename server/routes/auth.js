@@ -21,6 +21,8 @@ router.post('/', (req, res) => {
                     id: user.get('id'),
                     username: user.get('username')
                 }, config.jwtSecret);
+                
+                res.setHeader('Authorization', 'Bearer ' + token);
                 res.json({ token });
             } else {
                 res.status(401).json({
