@@ -8,6 +8,13 @@ export function setCurrentUser(user) {
     }
 }
 
+export function logout() {
+    return dispatch => {
+        localStorage.removeItem('jwtToken');
+        dispatch(setCurrentUser({}));
+    }
+}
+
 export function login(data) {
     return async dispatch => {
         return await fetch('/api/auth', {
@@ -21,7 +28,7 @@ export function login(data) {
         .then(data => {
             const token = data.token;
             localStorage.setItem('jwtToken', token);
-            
+
             return dispatch(setCurrentUser(jwt.decode(token)));
         })
     }
